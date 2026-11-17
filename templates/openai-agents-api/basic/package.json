@@ -31,10 +31,10 @@
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
     "start": "wrangler dev",
-    "postinstall": "npm run cf-typegen",
+    "postinstall": "bun run cf-typegen",
     "cf-typegen": "wrangler types --env-file .dev.vars.example",
     "typecheck": "wrangler types --env-file .dev.vars.example --check && tsc --noEmit --project tsconfig.json",
-    "test": "npm run test:workers",
+    "test": "bun run test:workers",
     "test:workers": "vitest run --config vitest.config.ts"
   },
   "dependencies": {

@@ -9,23 +9,23 @@
   ],
   "type": "module",
   "scripts": {
-    "build": "vp pack && npm run shim:build",
+    "build": "vp pack && bun run shim:build",
     "changeset": "changeset",
-    "check": "npm run check:ts && npm run shim:check",
-    "check:ts": "vp pack && vp check && npm run knip",
+    "check": "bun run check:ts && bun run shim:check",
+    "check:ts": "vp pack && vp check && bun run knip",
     "example": "node tools/example.ts",
     "examples:check-bundles": "node tools/example.ts check-bundles",
     "knip": "knip",
     "shim:build": "docker build --platform linux/amd64 ${SANDBOX_EXTRA_CA:+--secret id=extra_ca,src=$SANDBOX_EXTRA_CA} --target image --tag sandbox-tools:local --file images/sandbox-tools/Dockerfile .",
     "shim:check": "docker build --platform linux/amd64 ${SANDBOX_EXTRA_CA:+--secret id=extra_ca,src=$SANDBOX_EXTRA_CA} --target verify --file images/sandbox-tools/Dockerfile .",
-    "test": "npm run test:unit && npm run shim:check",
+    "test": "bun run test:unit && bun run shim:check",
     "test:unit": "vp test --run --passWithNoTests",
     "test:package": "vp pack && vp test --run packages/sandbox/tests/packed-api.test.ts && npm pack --workspace packages/sandbox --dry-run",
-    "test:release": "npm test && npm run test:package && npm run test:shim-mounts && npm run test:s3-e2e && npm run test:s3-lifecycle",
+    "test:release": "npm test && bun run test:package && bun run test:shim-mounts && bun run test:s3-e2e && bun run test:s3-lifecycle",
     "test:shim-mounts": "docker build --platform linux/amd64 ${SANDBOX_EXTRA_CA:+--secret id=extra_ca,src=$SANDBOX_EXTRA_CA} --target mounts --tag sandbox-tools-mounts-test --file images/sandbox-tools/Dockerfile . && docker run --rm --privileged --platform linux/amd64 sandbox-tools-mounts-test; status=$?; docker image rm sandbox-tools-mounts-test >/dev/null 2>&1; exit $status",
-    "test:s3-e2e": "npm run test:s3-fixtures && SANDBOX_S3_E2E=1 vp test --run packages/sandbox/tests/s3-gateway.integration.test.ts",
+    "test:s3-e2e": "bun run test:s3-fixtures && SANDBOX_S3_E2E=1 vp test --run packages/sandbox/tests/s3-gateway.integration.test.ts",
     "test:s3-fixtures": "node packages/sandbox/tests/s3-fixtures.ts",
-    "test:s3-lifecycle": "npm run test:s3-fixtures && SANDBOX_S3_LIFECYCLE=1 vp test --run packages/sandbox/tests/s3-mount.integration.test.ts",
+    "test:s3-lifecycle": "bun run test:s3-fixtures && SANDBOX_S3_LIFECYCLE=1 vp test --run packages/sandbox/tests/s3-mount.integration.test.ts",
     "test:s3-native-local": "vp pack && SANDBOX_S3_NATIVE_LOCAL=1 vp test --run packages/sandbox/tests/s3-native-local.integration.test.ts"
   },
   "devDependencies": {
@@ -46,5 +46,5 @@
   "engines": {
     "node": ">=24.11.0"
   },
-  "packageManager": "npm@11.16.0"
+  "packageManager": "bun@1.4.5"
 }
